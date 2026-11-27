@@ -1,0 +1,42 @@
+@page "/empresa/vitrina/{id:guid}"
+@model ProviEmplea.Web.Pages.Empresa.TalentoModel
+@{
+    ViewData["Title"] = "CV ciego";
+}
+
+<section class="content-page">
+    <p><a asp-page="/Empresa/Vitrina">← Volver a la vitrina</a></p>
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-success" role="status">@Model.Notice</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Error))
+    {
+        <div class="alert alert-warning" role="alert">@Model.Error</div>
+    }
+
+    @if (Model.Profile is not null)
+    {
+        <header class="content-heading">
+            <p class="eyebrow">Perfil anónimo</p>
+            <h1>CV ciego</h1>
+            <p>Datos identificatorios protegidos. Solicita intermediación de OMIL para iniciar contacto.</p>
+        </header>
+        <section class="content-card">
+            <h2>Experiencia laboral</h2>
+            @foreach (var experience in Model.Profile.Experiencia)
+            {
+                <article class="experience-item">
+                    <div>
+                        <h3>@experience.Cargo</h3>
+                        <p class="experience-employer">@experience.LugarTrabajo</p>
+                        <small>@(experience.FechaInicio?.ToString("MM/yyyy") ?? "Fecha no indicada") — @(experience.FechaFin?.ToString("MM/yyyy") ?? "Actualidad")</small>
+                    </div>
+                </article>
+            }
+        </section>
+        <form method="post" asp-page-handler="Request" asp-route-id="@Model.Profile.IdTalento">
+            <button class="btn btn-primary" type="submit">Solicitar intermediación OMIL</button>
+        </form>
+    }
+</section>

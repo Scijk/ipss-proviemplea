@@ -15,3 +15,24 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+
+# .NET
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+/secrets/
+**/App_Data/Uploads/
+
+# Oracle local-only installation media, data, and backups
+/oracle/install/
+/oracle/data/
+/oracle/backups/

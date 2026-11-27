@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="src\ProviEmplea.Web\ProviEmplea.Web.csproj" />
+  <Project Path="tools\ProviEmplea.AdminBootstrap\ProviEmplea.AdminBootstrap.csproj" />
+</Solution>

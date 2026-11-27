@@ -1,0 +1,27 @@
+@page
+@{
+    ViewData["Title"] = "Inicio";
+}
+
+<section class="welcome">
+    <div class="welcome-copy">
+        <p class="eyebrow">Oportunidades laborales en Providencia</p>
+        <h1>Tu próximo paso<br />comienza aquí.</h1>
+        <p class="welcome-description">
+            Conecta tu talento con empresas y oportunidades laborales de la comuna.
+            Crea tu perfil y encuentra nuevas posibilidades.
+        </p>
+        <div class="welcome-actions">
+            <a class="btn btn-primary" asp-page="/Registro/Talento">Crear cuenta de talento</a>
+            <a class="btn btn-outline-primary" asp-page="/Login">Ya tengo una cuenta</a>
+        </div>
+        <p class="status">Plataforma municipal de empleo</p>
+    </div>
+    <aside class="welcome-aside" aria-label="Información del servicio">
+        <div class="welcome-mark" aria-hidden="true">P</div>
+        <p class="aside-eyebrow">Municipalidad de Providencia</p>
+        <h2>Un espacio para conectar capacidades y oportunidades.</h2>
+        <p>Un servicio de apoyo laboral para personas y organizaciones de nuestra comuna.</p>
+        <a asp-page="/Registro/Empresa">¿Representas a una empresa? Regístrala <span aria-hidden="true">→</span></a>
+    </aside>
+</section>

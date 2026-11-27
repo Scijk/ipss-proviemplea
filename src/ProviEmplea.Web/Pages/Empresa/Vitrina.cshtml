@@ -1,0 +1,37 @@
+@page "/empresa/vitrina"
+@model ProviEmplea.Web.Pages.Empresa.VitrinaModel
+@{
+    ViewData["Title"] = "Vitrina de talento";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Selección con privacidad</p>
+        <h1>Vitrina de talento</h1>
+        <p>Perfiles aprobados por OMIL, presentados sin nombre, RUT, correo ni teléfono.</p>
+    </header>
+
+    <div class="notice-box">
+        La vista CV ciego muestra la experiencia laboral: lugar de trabajo, cargo y período. No se muestran campos de texto libre.
+    </div>
+
+    @if (Model.Profiles.Count == 0)
+    {
+        <div class="content-card empty-state">Aún no hay perfiles aprobados con experiencia laboral para mostrar.</div>
+    }
+    else
+    {
+        <div class="blind-profile-grid">
+            @foreach (var profile in Model.Profiles)
+            {
+                <article class="content-card blind-profile-card">
+                    <p class="profile-code">Perfil anónimo</p>
+                    <p class="experience-count">@profile.Experiencia.Count experiencia(s) laboral(es)</p>
+                    <a class="btn btn-outline-primary btn-sm"
+                       asp-page="/Empresa/Talento"
+                       asp-route-id="@profile.IdTalento">Ver CV ciego</a>
+                </article>
+            }
+        </div>
+    }
+</section>

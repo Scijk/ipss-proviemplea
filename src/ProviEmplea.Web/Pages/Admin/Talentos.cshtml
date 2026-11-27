@@ -1,0 +1,66 @@
+@page "/admin/talentos"
+@model ProviEmplea.Web.Pages.Admin.TalentosModel
+@{
+    ViewData["Title"] = "Validación de talentos";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Administración OMIL</p>
+        <h1>Validación de talentos</h1>
+        <p>Revisa los datos mínimos y el certificado antes de aprobar el acceso a la vitrina de CV ciego.</p>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-success" role="status">@Model.Notice</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Error))
+    {
+        <div class="alert alert-danger" role="alert">@Model.Error</div>
+    }
+
+    @if (Model.PendingTalents.Count == 0)
+    {
+        <div class="content-card empty-state">No hay cuentas pendientes de validación.</div>
+    }
+    else
+    {
+        <div class="review-list">
+            @foreach (var talent in Model.PendingTalents)
+            {
+                <article class="content-card review-card">
+                    <div class="review-details">
+                        <h2>@(talent.FullName ?? "Perfil incompleto")</h2>
+                        <dl>
+                            <div><dt>Correo</dt><dd>@talent.Email</dd></div>
+                            <div><dt>RUT</dt><dd>@(talent.NationalId ?? "Pendiente")</dd></div>
+                            <div><dt>Teléfono</dt><dd>@(talent.Phone ?? "Pendiente")</dd></div>
+                        </dl>
+                    </div>
+                    <div class="review-actions">
+                        @if (talent.HasProofOfResidence)
+                        {
+                            <a class="btn btn-outline-primary btn-sm"
+                               href="/api/v1/admin/talentos/@talent.UserId/certificado">
+                                Descargar certificado
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-danger small">Certificado pendiente</span>
+                        }
+                        <form method="post" asp-page-handler="Approve">
+                            <input type="hidden" name="userId" value="@talent.UserId" />
+                            <button class="btn btn-primary btn-sm"
+                                    type="submit"
+                                    disabled="@(string.IsNullOrWhiteSpace(talent.FullName) || string.IsNullOrWhiteSpace(talent.NationalId) || string.IsNullOrWhiteSpace(talent.Phone) || !talent.HasProofOfResidence)">
+                                Aprobar cuenta
+                            </button>
+                        </form>
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>

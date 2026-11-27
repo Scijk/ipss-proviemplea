@@ -1,0 +1,36 @@
+@page "/talento/solicitudes"
+@model ProviEmplea.Web.Pages.Talento.SolicitudesModel
+@{
+    ViewData["Title"] = "Solicitudes recibidas";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Área de talento</p>
+        <h1>Solicitudes de intermediación</h1>
+        <p>OMIL revisa las solicitudes de las empresas y coordina el contacto.</p>
+    </header>
+    @if (Model.Requests.Count == 0)
+    {
+        <div class="content-card empty-state">Aún no tienes solicitudes.</div>
+    }
+    else
+    {
+        <div class="content-card table-responsive">
+            <table class="table align-middle">
+                <thead><tr><th>Empresa</th><th>Estado</th><th>Recibida</th><th>Actualizada</th></tr></thead>
+                <tbody>
+                @foreach (var item in Model.Requests)
+                {
+                    <tr>
+                        <td>@item.Empresa</td>
+                        <td><span class="status-pill">@item.Estado</span></td>
+                        <td>@item.FechaSolicitud.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                        <td>@item.FechaActualizacion.ToLocalTime().ToString("dd/MM/yyyy")</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+</section>

@@ -1,0 +1,66 @@
+@page "/admin/solicitudes"
+@model ProviEmplea.Web.Pages.Admin.SolicitudesModel
+@{
+    ViewData["Title"] = "Seguimiento de solicitudes";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Administración OMIL</p>
+        <h1>Seguimiento de solicitudes</h1>
+        <p>Solo OMIL/Admin puede avanzar estados. Las notas son internas y no se muestran a empresa ni talento.</p>
+    </header>
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-success" role="status">@Model.Notice</div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Error))
+    {
+        <div class="alert alert-danger" role="alert">@Model.Error</div>
+    }
+
+    @if (Model.Requests.Count == 0)
+    {
+        <div class="content-card empty-state">Aún no hay solicitudes de intermediación.</div>
+    }
+    else
+    {
+        <div class="review-list">
+            @foreach (var item in Model.Requests)
+            {
+                <article class="content-card">
+                    <div class="content-card-heading">
+                        <div>
+                            <h2>CV ciego · @item.Estado</h2>
+                            <p>@item.Empresa · RUT @item.RutEmpresa</p>
+                            <small>Solicitud @item.FechaSolicitud.ToLocalTime().ToString("dd/MM/yyyy HH:mm")</small>
+                        </div>
+                    </div>
+                    <form method="post" asp-page-handler="Update" class="auth-form">
+                        <input type="hidden" name="id" value="@item.IdSolicitud" />
+                        <div class="row align-items-end">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="estado-@item.IdSolicitud">Estado</label>
+                                <select class="form-select" id="estado-@item.IdSolicitud" name="estado">
+                                    <option value="Contactado">Contactado</option>
+                                    <option value="Entrevista">Entrevista</option>
+                                    <option value="Seleccionado">Seleccionado</option>
+                                    <option value="No seleccionado">No seleccionado</option>
+                                    <option value="Cerrado">Cerrado</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" for="notas-@item.IdSolicitud">Notas internas</label>
+                                <input class="form-control" id="notas-@item.IdSolicitud" name="notasInternas"
+                                       value="@item.NotasInternas" maxlength="4000" />
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <button class="btn btn-primary w-100" type="submit">Actualizar</button>
+                            </div>
+                        </div>
+                    </form>
+                </article>
+            }
+        </div>
+    }
+</section>

@@ -1,0 +1,114 @@
+@page "/registro/empresa"
+@model ProviEmplea.Web.Pages.Registro.EmpresaModel
+@{
+    ViewData["Title"] = "Registrar empresa";
+}
+
+<section class="auth-shell register-shell">
+    <aside class="auth-aside company-aside">
+        <a class="auth-aside-brand" asp-page="/Index" aria-label="ProviEmplea, inicio">
+            <img class="auth-brand-logo" src="~/images/logo-proviemplea.png" alt="ProviEmplea" />
+        </a>
+        <div>
+            <h1>Conecta con talento local y encuentra <span>nuevas oportunidades</span></h1>
+            <p>Registra tu organización para conectar con personas que buscan nuevas oportunidades laborales en Providencia.</p>
+            <div class="aside-callout">
+                <span class="callout-number">01</span>
+                <span>Un espacio para empresas comprometidas con el desarrollo local.</span>
+            </div>
+        </div>
+        <img class="auth-municipal-logo" src="~/images/logo-providencia.png" alt="Municipalidad de Providencia" />
+    </aside>
+
+    <div class="auth-panel">
+        <div class="auth-card">
+            <a class="auth-back-link" asp-page="/Login"><span aria-hidden="true">←</span> Volver al login</a>
+            <a class="auth-mobile-brand" asp-page="/Index" aria-label="ProviEmplea, inicio">
+                <img class="auth-brand-logo" src="~/images/logo-proviemplea.png" alt="ProviEmplea" />
+            </a>
+            <h1>Registra tu empresa</h1>
+            <p class="form-intro">Completa estos datos para crear el acceso de tu organización.</p>
+
+            <form method="post" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+                <div class="mb-3">
+                    <label asp-for="Input.NombreEmpresa" class="form-label"></label>
+                    <input asp-for="Input.NombreEmpresa" class="form-control"
+                           autocomplete="organization" placeholder="Nombre legal o de fantasía" />
+                    <span asp-validation-for="Input.NombreEmpresa" class="field-error"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.IdRubro" class="form-label"></label>
+                        <select asp-for="Input.IdRubro" class="form-select">
+                            <option value="0">Selecciona un rubro</option>
+                            @foreach (var industry in Model.Industries)
+                            {
+                                <option value="@industry.Id">@industry.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Input.IdRubro" class="field-error"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.IdTipoEmpresa" class="form-label"></label>
+                        <select asp-for="Input.IdTipoEmpresa" class="form-select">
+                            <option value="0">Selecciona un tipo</option>
+                            @foreach (var type in Model.CompanyTypes)
+                            {
+                                <option value="@type.Id">@type.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Input.IdTipoEmpresa" class="field-error"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.RutEmpresa" class="form-label"></label>
+                    <input asp-for="Input.RutEmpresa" class="form-control"
+                           placeholder="12345678-9" />
+                    <span asp-validation-for="Input.RutEmpresa" class="field-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Correo" class="form-label"></label>
+                    <input asp-for="Input.Correo" class="form-control" type="email"
+                           autocomplete="email" placeholder="contacto@empresa.cl" />
+                    <span asp-validation-for="Input.Correo" class="field-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.NombreContacto" class="form-label"></label>
+                    <input asp-for="Input.NombreContacto" class="form-control" autocomplete="name" />
+                    <span asp-validation-for="Input.NombreContacto" class="field-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.TelefonoContacto" class="form-label"></label>
+                    <input asp-for="Input.TelefonoContacto" class="form-control" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" />
+                    <span asp-validation-for="Input.TelefonoContacto" class="field-error"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.Password" class="form-label"></label>
+                        <input asp-for="Input.Password" class="form-control" type="password"
+                               autocomplete="new-password" placeholder="Mínimo 8 caracteres" />
+                        <span asp-validation-for="Input.Password" class="field-error"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Input.ConfirmarPassword" class="form-label"></label>
+                        <input asp-for="Input.ConfirmarPassword" class="form-control" type="password"
+                               autocomplete="new-password" placeholder="Repite la contraseña" />
+                        <span asp-validation-for="Input.ConfirmarPassword" class="field-error"></span>
+                    </div>
+                </div>
+                <div class="notice-box">
+                    La cuenta de empresa queda aprobada automáticamente en esta etapa. La validación institucional se incorporará en una iteración futura.
+                </div>
+                <button class="btn btn-primary auth-submit" type="submit">Crear acceso de empresa</button>
+            </form>
+
+            <p class="auth-switch">
+                ¿Ya registraste tu empresa? <a asp-page="/Login">Inicia sesión</a>
+            </p>
+            <p class="auth-copyright">
+                © @DateTime.Now.Year Municipalidad de Providencia — ProviEmplea
+            </p>
+        </div>
+    </div>
+</section>

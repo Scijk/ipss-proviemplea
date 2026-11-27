@@ -1,0 +1,70 @@
+@page "/empresa/perfil"
+@model ProviEmplea.Web.Pages.Empresa.PerfilModel
+@{
+    ViewData["Title"] = "Perfil de empresa";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Área de empresa</p>
+        <h1>Perfil de organización</h1>
+        <p>Tu cuenta está aprobada automáticamente en esta etapa. La validación institucional se incorporará en una iteración futura.</p>
+    </header>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-success" role="status">@Model.Notice</div>
+    }
+
+    @if (Model.Profile is not null)
+    {
+        <section class="content-card">
+            <h2>Datos registrados</h2>
+            <dl class="profile-facts">
+                <div><dt>RUT empresa</dt><dd>@Model.Profile.RutEmpresa</dd></div>
+                <div><dt>Correo de contacto</dt><dd>@Model.Profile.CorreoContacto</dd></div>
+                <div><dt>Persona de contacto</dt><dd>@Model.Profile.NombreContacto</dd></div>
+                <div><dt>Teléfono</dt><dd>@(Model.Profile.TelefonoContacto ?? "No informado")</dd></div>
+            </dl>
+        </section>
+    }
+
+    <section class="content-card">
+        <h2>Presentación de la empresa</h2>
+        <p class="form-intro">La vitrina aún no expone estos datos. Aquí puedes preparar una presentación y beneficios para el siguiente incremento.</p>
+        <form method="post" class="auth-form">
+            <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Input.NombreEmpresa" class="form-label"></label>
+                <input asp-for="Input.NombreEmpresa" class="form-control" />
+                <span asp-validation-for="Input.NombreEmpresa" class="field-error"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Presentacion" class="form-label"></label>
+                <textarea asp-for="Input.Presentacion" class="form-control" rows="4" maxlength="2000"></textarea>
+                <span asp-validation-for="Input.Presentacion" class="field-error"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Beneficios" class="form-label"></label>
+                <textarea asp-for="Input.Beneficios" class="form-control" rows="3" maxlength="2000"></textarea>
+                <span asp-validation-for="Input.Beneficios" class="field-error"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.NombreContacto" class="form-label"></label>
+                <input asp-for="Input.NombreContacto" class="form-control" autocomplete="name" />
+                <span asp-validation-for="Input.NombreContacto" class="field-error"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.TelefonoContacto" class="form-label"></label>
+                <input asp-for="Input.TelefonoContacto" class="form-control" type="tel" autocomplete="tel" />
+                <span asp-validation-for="Input.TelefonoContacto" class="field-error"></span>
+            </div>
+            <button class="btn btn-primary" type="submit">Guardar perfil</button>
+        </form>
+    </section>
+
+    <nav class="area-links" aria-label="Herramientas de empresa">
+        <a class="btn btn-outline-primary" asp-page="/Empresa/Vitrina">Explorar CV ciego</a>
+        <a class="btn btn-outline-primary" asp-page="/Empresa/Solicitudes">Ver solicitudes enviadas</a>
+    </nav>
+</section>

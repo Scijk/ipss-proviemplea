@@ -1,0 +1,137 @@
+@page "/talento/perfil"
+@model ProviEmplea.Web.Pages.Talento.PerfilModel
+@{
+    ViewData["Title"] = "Mi perfil laboral";
+}
+
+<section class="content-page">
+    <header class="content-heading">
+        <p class="eyebrow">Área de talento</p>
+        <h1>Mi perfil laboral</h1>
+        <p>Completa tus datos y agrega experiencia para participar en la vitrina de CV ciego.</p>
+    </header>
+
+    @if (Model.ValidationStatus == "Pendiente")
+    {
+        <div class="notice-box" role="status">
+            Tu cuenta está <strong>pendiente de validación municipal</strong>. Puedes completar tu perfil y subir el certificado de residencia; aparecerás en la vitrina cuando la OMIL apruebe tu cuenta.
+        </div>
+    }
+    @if (!string.IsNullOrWhiteSpace(Model.Notice))
+    {
+        <div class="alert alert-success" role="status">@Model.Notice</div>
+    }
+
+    <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+
+    <section class="content-card">
+        <h2>Datos de contacto y residencia</h2>
+        <p class="form-intro">El correo se toma de tu cuenta. Estos datos solo son visibles para ti y el equipo municipal autorizado.</p>
+        <form method="post" enctype="multipart/form-data" class="auth-form">
+            <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <input class="form-control" value="@Model.Email" readonly />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.NombreCompleto" class="form-label">Nombre completo</label>
+                <input asp-for="Input.NombreCompleto" class="form-control" autocomplete="name" />
+                <span asp-validation-for="Input.NombreCompleto" class="field-error"></span>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Rut" class="form-label">RUT</label>
+                    <input asp-for="Input.Rut" class="form-control" placeholder="12.345.678-9" autocomplete="off" />
+                    <span asp-validation-for="Input.Rut" class="field-error"></span>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label asp-for="Input.Telefono" class="form-label">Número de teléfono</label>
+                    <input asp-for="Input.Telefono" class="form-control" type="tel" autocomplete="tel" placeholder="+56 9 1234 5678" />
+                    <span asp-validation-for="Input.Telefono" class="field-error"></span>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Input.Resumen" class="form-label">Resumen profesional <span class="text-muted">(opcional)</span></label>
+                <textarea asp-for="Input.Resumen" class="form-control" rows="3" maxlength="2000"></textarea>
+                <span asp-validation-for="Input.Resumen" class="field-error"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Certificado" class="form-label">Certificado de residencia</label>
+                <input asp-for="Certificado" class="form-control" type="file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" />
+                <span class="form-hint">PDF, Word, JPG o PNG; máximo 5 MB. Se guarda en almacenamiento privado.</span>
+                @if (Model.Profile?.CertificadoCargado == true)
+                {
+                    <span class="field-success">Ya cargaste un certificado. Si subes otro, quedará registrado como la versión más reciente.</span>
+                }
+            </div>
+            <button class="btn btn-primary auth-submit" type="submit">Guardar perfil y certificado</button>
+        </form>
+    </section>
+
+    <section class="content-card">
+        <div class="content-card-heading">
+            <div>
+                <h2>Experiencia laboral</h2>
+                <p class="form-intro">Los lugares de trabajo, cargos y períodos podrán aparecer en tu CV ciego.</p>
+            </div>
+        </div>
+        @if (Model.Experiences.Count == 0)
+        {
+            <p class="empty-state">Todavía no agregas experiencias laborales.</p>
+        }
+        else
+        {
+            <div class="experience-list">
+                @foreach (var item in Model.Experiences)
+                {
+                    <article class="experience-item">
+                        <div>
+                            <h3>@item.Cargo</h3>
+                            <p class="experience-employer">@item.Empresa</p>
+                            @if (!string.IsNullOrWhiteSpace(item.Descripcion))
+                            {
+                                <p>@item.Descripcion</p>
+                            }
+                            <small>@(item.FechaInicio?.ToString("MM/yyyy") ?? "Fecha no indicada") — @(item.FechaFin?.ToString("MM/yyyy") ?? "Actualidad")</small>
+                        </div>
+                        <form method="post" asp-page-handler="DeleteExperience" asp-route-id="@item.Id">
+                            <button class="btn btn-outline-danger btn-sm" type="submit">Eliminar</button>
+                        </form>
+                    </article>
+                }
+            </div>
+        }
+
+        <details class="experience-editor">
+            <summary>Agregar experiencia laboral</summary>
+            <form method="post" asp-page-handler="Experience" class="auth-form mt-3">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Experience.Empresa" class="form-label">Lugar de trabajo</label>
+                        <input asp-for="Experience.Empresa" class="form-control" />
+                        <span asp-validation-for="Experience.Empresa" class="field-error"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Experience.Cargo" class="form-label">Cargo</label>
+                        <input asp-for="Experience.Cargo" class="form-control" />
+                        <span asp-validation-for="Experience.Cargo" class="field-error"></span>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Experience.Descripcion" class="form-label">Descripción <span class="text-muted">(opcional)</span></label>
+                    <textarea asp-for="Experience.Descripcion" class="form-control" rows="3" maxlength="2000"></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Experience.FechaInicio" class="form-label">Fecha de inicio <span class="text-muted">(opcional)</span></label>
+                        <input asp-for="Experience.FechaInicio" class="form-control" type="date" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Experience.FechaFin" class="form-label">Fecha de término <span class="text-muted">(vacío si es actual)</span></label>
+                        <input asp-for="Experience.FechaFin" class="form-control" type="date" />
+                    </div>
+                </div>
+                <button class="btn btn-primary" type="submit">Agregar experiencia</button>
+            </form>
+        </details>
+    </section>
+</section>

@@ -1,0 +1,68 @@
+@page "/login"
+@model ProviEmplea.Web.Pages.LoginModel
+@{
+    ViewData["Title"] = "Iniciar sesión";
+}
+
+<section class="auth-shell">
+    <aside class="auth-aside">
+        <a class="auth-aside-brand" asp-page="/Index" aria-label="ProviEmplea, inicio">
+            <img class="auth-brand-logo" src="~/images/logo-proviemplea.png" alt="ProviEmplea" />
+        </a>
+        <div>
+            <h1>Conectamos el talento de Providencia con <span>nuevas oportunidades</span></h1>
+            <p>Plataforma oficial de empleabilidad de la Municipalidad de Providencia. Ingresa para gestionar tu perfil y oportunidades laborales.</p>
+            <div class="auth-stats" aria-label="ProviEmplea en cifras">
+                <div><strong>12.000+</strong><span>Vecinos</span></div>
+                <div><strong>450+</strong><span>Empresas</span></div>
+                <div><strong>89%</strong><span>Satisfacción</span></div>
+            </div>
+        </div>
+        <img class="auth-municipal-logo" src="~/images/logo-providencia.png" alt="Municipalidad de Providencia" />
+    </aside>
+
+    <div class="auth-panel">
+        <div class="auth-card">
+            <a class="auth-mobile-brand" asp-page="/Index" aria-label="ProviEmplea, inicio">
+                <img class="auth-brand-logo" src="~/images/logo-proviemplea.png" alt="ProviEmplea" />
+            </a>
+            <h1>Bienvenido/a de vuelta</h1>
+            <p class="form-intro">Ingresa tus credenciales para acceder a tu cuenta.</p>
+
+            @if (!string.IsNullOrWhiteSpace(Model.RegistrationNotice))
+            {
+                <div class="alert alert-success" role="status">@Model.RegistrationNotice</div>
+            }
+
+            <form method="post" class="auth-form">
+                <div asp-validation-summary="ModelOnly" class="validation-summary" role="alert"></div>
+                <div class="mb-3">
+                    <label asp-for="Input.Correo" class="form-label"></label>
+                    <input asp-for="Input.Correo" class="form-control" type="email"
+                           autocomplete="email" placeholder="tu@correo.cl" />
+                    <span asp-validation-for="Input.Correo" class="field-error"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Input.Password" class="form-label">Contraseña</label>
+                    <input asp-for="Input.Password" class="form-control" type="password"
+                           autocomplete="current-password" placeholder="Tu contraseña" />
+                    <span asp-validation-for="Input.Password" class="field-error"></span>
+                </div>
+                <div class="form-options">
+                    <span>¿Olvidaste tu contraseña?</span>
+                    <span class="muted-link">Próximamente</span>
+                </div>
+                <button class="btn btn-primary auth-submit" type="submit">Ingresar</button>
+            </form>
+
+            <div class="auth-divider"><span>¿No tienes cuenta?</span></div>
+            <div class="auth-registration-links">
+                <a asp-page="/Registro/Talento">Soy vecino/a</a>
+                <a asp-page="/Registro/Empresa">Soy empresa</a>
+            </div>
+            <p class="auth-copyright">
+                © @DateTime.Now.Year Municipalidad de Providencia — ProviEmplea
+            </p>
+        </div>
+    </div>
+</section>
